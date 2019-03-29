@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zkjt.xxzx.mapper.SafeDeviceMapper">
+  <resultMap id="BaseResultMap" type="com.zkjt.xxzx.model.SafeDevice">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="position" jdbcType="VARCHAR" property="position" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="loginmethod" jdbcType="VARCHAR" property="loginmethod" />
+    <result column="describe" jdbcType="VARCHAR" property="describe" />
+    <result column="manufacture" jdbcType="VARCHAR" property="manufacture" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, position, name, type, address, loginmethod, describe, manufacture
+  </sql>
+
+  <select id="selectAllSafeDevice" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from xxzx.safedevice
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from xxzx.safedevice
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from xxzx.safedevice
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zkjt.xxzx.model.SafeDevice">
+    insert into xxzx.safedevice (id, position, name,
+      type, address, loginmethod,
+      describe, manufacture)
+    values (#{id,jdbcType=INTEGER}, #{position,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
+      #{type,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{loginmethod,jdbcType=VARCHAR},
+      #{describe,jdbcType=VARCHAR}, #{manufacture,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zkjt.xxzx.model.SafeDevice">
+    insert into xxzx.safedevice
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="position != null">
+        position,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="loginmethod != null">
+        loginmethod,
+      </if>
+      <if test="describe != null">
+        describe,
+      </if>
+      <if test="manufacture != null">
+        manufacture,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="position != null">
+        #{position,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="loginmethod != null">
+        #{loginmethod,jdbcType=VARCHAR},
+      </if>
+      <if test="describe != null">
+        #{describe,jdbcType=VARCHAR},
+      </if>
+      <if test="manufacture != null">
+        #{manufacture,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zkjt.xxzx.model.SafeDevice">
+    update xxzx.safedevice
+    <set>
+      <if test="position != null">
+        position = #{position,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="loginmethod != null">
+        loginmethod = #{loginmethod,jdbcType=VARCHAR},
+      </if>
+      <if test="describe != null">
+        describe = #{describe,jdbcType=VARCHAR},
+      </if>
+      <if test="manufacture != null">
+        manufacture = #{manufacture,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zkjt.xxzx.model.SafeDevice">
+    update xxzx.safedevice
+    set position = #{position,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      loginmethod = #{loginmethod,jdbcType=VARCHAR},
+      describe = #{describe,jdbcType=VARCHAR},
+      manufacture = #{manufacture,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

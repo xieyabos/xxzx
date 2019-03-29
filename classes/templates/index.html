@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:width="http://www.w3.org/1999/xhtml"
+      layout:decorate="base">
+
+<fieldset class="layui-elem-field" layout:fragment="content">
+    <legend style="text-align: center;">服务器信息列表</legend>
+    <div class="layui-field-box">
+        <!--页面顶部的查询部分-->
+        <!--<form class="layui-form" action="">-->
+        <!--<div class="layui-form-item" style="text-align:center;">-->
+        <!--<div class="layui-inline">-->
+        <!--<input id="inputIp" autocomplete="off" class="layui-input" placeholder="请输入ip">-->
+        <!--</div>-->
+        <!--<button id="searchByIp" lass="layui-btn" ><i class="layui-icon">&#xe615;</i>查询</button>-->
+        <!--</div>-->
+        <!--</form>-->
+        <!--<hr>-->
+
+        <!--定义一个数据表格容器-->
+        <table id="serverinfoTable" lay-filter="test"></table>
+
+        <!--表头工具条容器-->
+        <script type="text/html" id="toolbarDemo" lay-filter="test2">
+            <div class="layui-btn-container">
+                <button class="layui-btn layui-btn-sm layui-btn-radius layui-btn-normal" lay-event="add">添加</button>
+                <button class="layui-btn layui-btn-sm layui-btn-radius layui-btn-warm" lay-event="search">查找</button>
+                <!--<button class="layui-btn layui-btn-sm" lay-event="update">编辑</button>-->
+            </div>
+        </script>
+
+        <!--定义一个行尾部工具条容器-->
+        <script type="text/html" id="tailtoolbar">
+            <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+            <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+        </script>
+
+        <!--添加/修改的弹出框内容表格-->
+        <table id="bidderDiv" border="0" style="display: none;margin: auto;width: 100%;height: 100%;">
+            <tr>
+                <td class="text-center">id</td>
+                <td class="text-center"><input type="text" id="id" style="width: 70%" disabled="disabled"
+                                               placeholder="自动生成"/></td>
+            </tr>
+            <tr>
+                <td class="text-center">类型</td>
+                <td class="text-center"><input style="width: 70%" type="text" id="type"/></td>
+            </tr>
+            <tr>
+                <td class="text-center">介绍</td>
+                <td class="text-center"><input type="text" style="width: 70%" id="introduce"/></td>
+            </tr>
+            <tr>
+                <td class="text-center">ip地址</td>
+                <td class="text-center"><input type="text" style="width: 70%" id="ip"/></td>
+            </tr>
+            <tr>
+                <td class="text-center">用户名</td>
+                <td class="text-center"><input type="text" id="user" style="width: 70%"/></td>
+            </tr>
+            <tr>
+                <td class="text-center">密码</td>
+                <td class="text-center"><input type="text" id="password" style="width: 70%"/></td>
+            </tr>
+            <tr>
+                <td class="text-center">备注</td>
+                <td class="text-center"><input type="text" id="comment" style="width: 70%"/></td>
+            </tr>
+        </table>
+
+        <!--layui的js方法-->
+        <script>
+            layui.use(['table', 'layer'], function () {
+                var table = layui.table;
+
+                table.render({
+                    elem: '#serverinfoTable'
+                    , toolbar: '#toolbarDemo'
+                    , height: '700'
+                    , url: 'showTable' //数据接口
+                    , page: true //开启分页
+                    , page: {
+                        limits: [10, 20, 30]
+                        , limit: 16 //每页默认显示的数量
+                        , curr: 1
+                        , prev: "上一页"
+                        , next: "下一页"
+                        , groups: 5
+                    }
+                    , cols: [
+                        [
+
+                            {field: 'id', title: 'ID', width: 80, sort: true, fixed: 'left'}
+                            , {field: 'ip', title: 'IP地址', sort: true}
+                            , {field: 'user', title: '账号', sort: true}
+                            , {field: 'password', title: '密码', sort: true}
+                            , {field: 'type', title: '类型',}
+                            , {field: 'introduce', title: '介绍', sort: true}
+                            , {field: 'comment', title: '说明', sort: true}
+                            , {fixed: 'right', width: 200, align: 'center', toolbar: '#tailtoolbar'}
+                        ]
+                    ]
+                });
+
+
+                // 监听头工具栏添加/查询事件
+                table.on('toolbar(test)', function (obj) {
+                    var checkStatus = table.checkStatus(obj.config.id);
+
+                    switch (obj.event) {
+                        case 'add':
+                            layer.open({
+                                type: 1,
+                                title: '添加服务器信息',   //标题
+                                area: ['390px', '330px'],   //宽高
+                                shade: 0,   //遮罩透明度
+                                content: $("#bidderDiv"),//支持获取DOM元素
+                                btn: ['确定', '取消'], //按钮组
+                                scrollbar: false,//屏蔽浏览器滚动条
+                                yes: function (index) {//layer.msg('yes');    //点击确定回调
+
+                                    // 获取修改后的内容
+                                    var record = {
+                                        id: $('#id').val(),
+                                        type: $('#type').val(),
+                                        introduce: $('#introduce').val(),
+                                        ip: $('#ip').val(),
+                                        user: $('#user').val(),
+                                        password: $('#password').val(),
+                                        comment: $('#comment').val(),
+                                    }
+                                    // ajax提交内容到后台进行处理
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "insertServerInfo",
+                                        datatype: "text",
+                                        contentType: "application/json",
+                                        data: JSON.stringify(record),
+                                        async: true,
+                                        success: function (result) {
+                                            layer.alert('添加成功', {
+                                                icon: 6
+                                            });
+                                        },
+                                        error: function (result) {
+                                            layer.alert('添加失败', {
+                                                icon: 5
+                                            });
+                                        }
+                                    });
+
+                                    // 关闭修改窗口,index是确认按钮的回调
+                                    layer.close(index);
+                                },
+                                btn2: function () {//layer.alert('aaa',{title:'msg title'});  ////点击取消回调
+                                    layer.msg('已取消');//layer.closeAll();
+                                }
+                            });
+                            // 获取要修改的记录内容,显示在弹出的修改框内
+                            $("#id").val("");
+                            $("#type").val("");
+                            $("#introduce").val("");
+                            $("#ip").val("");
+                            $("#user").val("");
+                            $("#password").val("");
+                            $("#comment").val("");
+                            break;
+
+                        case 'search':
+                            layer.prompt({
+                                title: '根据IP查询'
+                            }, function (val, index) {
+                                layer.close(index);
+                                $.ajax({
+                                    type: "POST",
+                                    datatype: "json",
+                                    url: "searchByIp",
+                                    data: "ip=" + val,
+                                    contentType: "application/x-www-form-urlencoded",
+                                    async: false,
+                                    success: function (result) {
+                                        var r = JSON.stringify(result);
+                                        layer.alert(
+                                            "ID: " + result["id"] + "</br>" +
+                                            "IP: " + result["ip"] + "</br>" +
+                                            "账号: " + result["user"] + "</br>" +
+                                            "密码 : " + result["password"] + "</br>" +
+                                            "类型: " + result["type"] + "</br>" +
+                                            "介绍: " + result["introduce"] + "</br>" +
+                                            "说明: " + result["comment"] + "</br>",
+                                            {
+                                                title: '查询结果'
+                                            });
+                                    },
+                                    error: function (result) {
+                                        layer.alert('查找失败', {
+                                            icon: 5
+                                        });
+                                    }
+                                });
+                            });
+                            break;
+                        // case 'update':
+                        //     layer.msg('编辑');
+                        //     break;
+                    }
+                    ;
+                });
+
+                //监听行工具事件
+                table.on('tool(test)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+                    var data = obj.data //获得当前行数据
+                        , layEvent = obj.event //获得 lay-event 对应的值
+                        , row = obj.tr; //获得 lay-event 对应的值
+                    if (layEvent === 'detail') {
+                        // 向服务器端发送请求
+                        $.ajax({
+                            type: "POST",
+                            datatype: "json",
+                            url: "searchByIp",
+                            data: "ip=" + data.ip,
+                            contentType: "application/x-www-form-urlencoded",
+                            async: false,
+                            success: function (result) {
+                                var r = JSON.stringify(result);
+                                layer.alert(
+                                    "ID: " + result["id"] + "</br>" +
+                                    "IP: " + result["ip"] + "</br>" +
+                                    "账号: " + result["user"] + "</br>" +
+                                    "密码 : " + result["password"] + "</br>" +
+                                    "类型: " + result["type"] + "</br>" +
+                                    "介绍: " + result["introduce"] + "</br>" +
+                                    "说明: " + result["comment"] + "</br>",
+                                    {
+                                        title: '竖向排列的查看格式'
+                                    });
+                            }
+                        })
+
+                    } else if (layEvent === 'del') {
+                        layer.confirm('确定删除码？', function (index) {
+                            obj.del(); //删除对应行（tr）的DOM结构
+                            layer.close(index);
+                            //向服务端发送删除指令
+                            console.log(obj.id);
+                            $.ajax({
+                                type: "POST",
+                                url: "deleteServerInfo",
+                                data: "id=" + data.id,
+                                contentType: "application/x-www-form-urlencoded",
+                                async: false,
+                                success: function (result) {
+                                    location.reload();
+                                },
+                                error: function (result) {
+                                    layer.alert('删除失败', {
+                                        icon: 5
+                                    });
+                                }
+                            });
+                        });
+                    } else if (layEvent === 'edit') { //编辑
+                        // 向服务器端发送点击编辑按钮的指令
+                        layer.open({
+                            type: 1,
+                            title: '修改记录信息',   //标题
+                            area: ['390px', '330px'],   //宽高
+                            shade: 0,   //遮罩透明度
+                            content: $("#bidderDiv"),//支持获取DOM元素
+                            btn: ['确定', '取消'], //按钮组
+                            scrollbar: false,//屏蔽浏览器滚动条
+                            yes: function (index) {//layer.msg('yes');    //点击确定回调
+                                // 获取修改后的内容
+                                var record = {
+                                    id: row["id"],
+                                    id: $('#id').val(),
+                                    type: $('#type').val(),
+                                    introduce: $('#introduce').val(),
+                                    ip: $('#ip').val(),
+                                    user: $('#user').val(),
+                                    password: $('#password').val(),
+                                    comment: $('#comment').val(),
+                                };
+                                // ajax提交内容到后台进行处理
+                                $.ajax({
+                                    type: "POST",
+                                    url: "updateServerInfo",
+                                    datatype: "text",
+                                    contentType: "application/json",
+                                    data: JSON.stringify(record),
+                                    async: true,
+                                    success: function (result) {
+                                        layer.alert('修改成功', {
+                                            icon: 6
+                                        });
+                                    },
+                                    error: function (result) {
+                                        layer.alert('修改失败', {
+                                            icon: 5
+                                        });
+                                    }
+                                });
+
+                                // 修改后的内容在前台进行改变
+                                obj.update({
+                                    id: record.id
+                                    , type: record.type
+                                    , introduce: record.introduce
+                                    , ip: record.ip
+                                    , user: record.user
+                                    , password: record.password
+                                    , comment: record.comment
+                                });
+
+                                // 关闭修改窗口
+                                layer.close(index);
+                            },
+                            btn2: function () {//layer.alert('aaa',{title:'msg title'});  ////点击取消回调
+                                layer.msg('已取消');//layer.closeAll();
+                            }
+                        });
+
+                        // 获取要修改的记录内容,显示在弹出的修改框内
+                        $("#id").val(data.id);
+                        $("#type").val(data.type);
+                        $("#introduce").val(data.introduce);
+                        $("#ip").val(data.ip);
+                        $("#user").val(data.user);
+                        $("#password").val(data.password);
+                        $("#comment").val(data.comment);
+                    }
+                });
+            });
+        </script>
+    </div>
+</fieldset>
+
+</html>

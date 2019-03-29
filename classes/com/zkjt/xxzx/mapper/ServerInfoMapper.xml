@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zkjt.xxzx.mapper.ServerInfoMapper">
+  <resultMap id="BaseResultMap" type="com.zkjt.xxzx.model.ServerInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="introduce" jdbcType="VARCHAR" property="introduce" />
+    <result column="ip" jdbcType="CHAR" property="ip" />
+    <result column="user" jdbcType="VARCHAR" property="user" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="comment" jdbcType="VARCHAR" property="comment" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, type, introduce, ip, user, password, comment
+  </sql>
+
+
+  <select id="selectAll"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from xxzx.server_info
+  </select>
+
+  <insert id="insertServerInfo" parameterType="com.zkjt.xxzx.model.ServerInfo">
+    insert into xxzx.server_info (id, type, introduce,
+      ip, user, password, comment
+      )
+    values (#{id,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{introduce,jdbcType=VARCHAR},
+      #{ip,jdbcType=CHAR}, #{user,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{comment,jdbcType=VARCHAR}
+      )
+  </insert>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from xxzx.server_info
+    where id = #{id}
+  </delete>
+
+  <update id="updateServerInfo" parameterType="com.zkjt.xxzx.model.ServerInfo">
+    update xxzx.server_info
+    set type = #{type,jdbcType=VARCHAR},
+    introduce = #{introduce,jdbcType=VARCHAR},
+    ip = #{ip,jdbcType=CHAR},
+    user = #{user,jdbcType=VARCHAR},
+    password = #{password,jdbcType=VARCHAR},
+    comment = #{comment,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByIp" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from xxzx.server_info
+    where ip = #{ip}
+  </select>
+
+
+
+</mapper>

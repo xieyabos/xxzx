@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.zkjt.xxzx.XxzxApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.447 s - in com.zkjt.xxzx.XxzxApplicationTests

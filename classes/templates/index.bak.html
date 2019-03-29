@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" xclass="no-js" mlns:th="http://www.w3.org/1999/xhtml" xmlns:mlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tab Styles Inspiration</title>
+
+
+    <!-- 引入中文语言包 -->
+    <script src="https://cdn.bootcss.com/bootstrap-table/1.11.1/locale/bootstrap-table-zh-CN.min.js"></script>
+
+
+    <!--一下是表格展示用到的JS-->
+    <!-- jquery -->
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+
+    <!-- bootsrap -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!-- bootstrap-table -->
+    <link href="https://cdn.bootcss.com/bootstrap-table/1.11.1/bootstrap-table.min.css" rel="stylesheet" />
+    <script src="https://cdn.bootcss.com/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap-table/1.11.1/locale/bootstrap-table-zh-CN.min.js"></script>
+
+    <!--layer ui-->
+    <script type="text/javascript" src="layer-v3.1.1/layer/layer.js"></script>
+
+    <!--公告样式-->
+    <link rel="stylesheet" type="text/css" href="css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="css/demo.css" />
+
+    <!--必要样式-->
+    <link rel="stylesheet" type="text/css" href="css/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="css/tabstyles.css" />
+
+    <script src="js/modernizr.custom.js"></script>
+
+
+    <!--表格导出插件-->
+    <script src="js/bootstrap-table-export.js"></script>
+    <script src="js/tableExport.js"></script>
+    <script src="js/xlsx.core.min.js"></script>
+    <script src="js/FileSaver.min.js"></script>
+
+
+    <script src="JavaScript/ServerInfo.js"></script>
+
+
+</head>
+<body>
+    <div class="container" style="width:100%">
+        <section>
+            <div class="tabs tabs-style-bar">
+
+                <nav>
+                    <ul>
+                        <li><a href="#section-bar-1" class="icon icon-home"><span>服务器信息</span></a></li>
+                        <li><a href="#section-bar-2" class="icon icon-box"><span>系统信息</span></a></li>
+                        <li><a href="#section-bar-3" class="icon icon-display"><span>Analytics</span></a></li>
+                        <li><a href="#section-bar-4" class="icon icon-upload"><span>Upload</span></a></li>
+                        <li><a href="#section-bar-5" class="icon icon-tools"><span>Settings</span></a></li>
+                    </ul>
+                </nav>
+
+                <div class="content-wrap">
+                    <!--1、服务器页面-->
+                    <section id="section-bar-1">
+
+                        <div class="container">
+                            <!--<h1 align="center">服务器信息</h1>-->
+                            <div id = "toolbar" class="btn-group">
+                                <button id="home" type="button" class="btn btn-default">刷新</button>
+                                <button id="add" type="button" class="btn btn-default">
+                                    <span class="glyphicon glyphicon-plus"aria-hidden="true">添加</span>
+                                </button>
+                                <button id="searchByip" type="button" class="btn btn-default">查找</button>
+
+                            </div>
+
+                            <div id="ccT">
+                                <table id="ArbetTable"> </table>
+                            </div>
+                        </div>
+
+                        <div id="bidderDiv" style="display: none;">
+                            <table class="table table-bordered">
+                                <tbody>
+                                <tr>
+                                    <td class="text-center" colspan="2"><font color="red" size="4">注意！</font></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">id</td>
+                                    <td class="text-center"><input type="text" id="id" disabled="disabled"/></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">type</td>
+                                    <td class="text-center"><input type="text" id="type" /></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">introduce</td>
+                                    <td class="text-center"><input type="text" id="introduce" /></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">ip</td>
+                                    <td class="text-center"><input type="text" id="ip" /></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">user</td>
+                                    <td class="text-center"><input type="text" id="user" /></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">password</td>
+                                    <td class="text-center"><input type="text" id="password" /></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">comment</td>
+                                    <td class="text-center"><input type="text" id="comment" /></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center" colspan="2"><button id="dilivery" class="btn btn-primary btn-block">提交</button></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </section>
+                    <section id="section-bar-2"><p>2</p></section>
+                    <section id="section-bar-3"><p>3</p></section>
+                    <section id="section-bar-4"><p>4</p></section>
+                    <section id="section-bar-5"><p>5</p></section>
+                </div><!-- /content -->
+            </div><!-- /tabs -->
+        </section>
+    </div>
+
+
+    <!--选项卡切换的JS-->
+    <script type="text/javascript" src="js/cbpFWTabs.js"></script>
+    <script type="text/javascript">
+        (function() {
+            [].slice.call( document.querySelectorAll( '.tabs' ) ).forEach( function( el ) {
+                new CBPFWTabs( el );
+            });
+        })();
+    </script>
+
+
+</body>
+</html>
